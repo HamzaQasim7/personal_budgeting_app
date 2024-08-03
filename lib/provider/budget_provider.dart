@@ -6,6 +6,7 @@ import '../services/firebase_services.dart';
 class BudgetProvider with ChangeNotifier {
   final FirestoreService _firestoreService = FirestoreService();
   List<BudgetCategory> _categories = [];
+  final String defaultCurrencyCode = 'PKR';
 
   List<BudgetCategory> get categories => _categories;
   double get totalBudget =>

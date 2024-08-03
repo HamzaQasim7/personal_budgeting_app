@@ -14,6 +14,8 @@ class Dashboard extends StatefulWidget {
   _DashboardState createState() => _DashboardState();
 }
 
+final BudgetProvider budgetProvider = BudgetProvider();
+
 class _DashboardState extends State<Dashboard> {
   late Future<void> _fetchFuture;
 
@@ -28,16 +30,15 @@ class _DashboardState extends State<Dashboard> {
   }
 
   BudgetCategory category = BudgetCategory(id: '', name: '', budgetedAmount: 0);
+  final totalBudget = budgetProvider.totalBudget.toStringAsFixed(1);
+  final totalSpent = budgetProvider.totalSpent.toStringAsFixed(1);
+  final currencyCode = budgetProvider.defaultCurrencyCode;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: RefreshIndicator(
-        onRefresh: () async {
-          setState(() {
-            _fetchFuture = _fetchCategories();
-          });
-        },
+        onRefresh: _refreshCategories,
         child: FutureBuilder(
           future: _fetchFuture,
           builder: (context, snapshot) {
@@ -58,10 +59,7 @@ class _DashboardState extends State<Dashboard> {
                       const SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.only(left: 12.0, top: 12),
-                        child: Text(
-                          'Dashboard',
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
+                        child: _buildHeader(),
                       ),
                       const SizedBox(height: 20),
                       Padding(
@@ -124,6 +122,7 @@ class _DashboardState extends State<Dashboard> {
                       Expanded(
                         child: ListView.builder(
                           itemCount: budgetProvider.categories.length,
+                          reverse: true,
                           itemBuilder: (context, index) {
                             final category = budgetProvider.categories[index];
                             return Dismissible(
@@ -157,22 +156,42 @@ class _DashboardState extends State<Dashboard> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black87,
-        onPressed: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddEditCategoryScreen()),
-          );
-          setState(() {
-            _fetchFuture = _fetchCategories();
-          });
-        },
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 30,
-        ),
+      floatingActionButton: _buildFloatingActionButton(),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 12.0, top: 12),
+      child: Text(
+        'Dashboard',
+        style:
+            Theme.of(context).textTheme.titleLarge!.apply(fontSizeFactor: 0.8),
+      ),
+    );
+  }
+
+  Future<void> _refreshCategories() async {
+    setState(() {
+      _fetchFuture = _fetchCategories();
+    });
+  }
+
+  Widget _buildFloatingActionButton() {
+    return FloatingActionButton(
+      backgroundColor: Colors.black87,
+      onPressed: () async {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const AddEditCategoryScreen()),
+        );
+        _refreshCategories();
+      },
+      child: const Icon(
+        Icons.add,
+        color: Colors.white,
+        size: 30,
       ),
     );
   }

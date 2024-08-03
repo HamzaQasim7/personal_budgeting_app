@@ -17,7 +17,8 @@ dependencies:
   cloud_firestore: ^5.2.0
   flutter_colorpicker: ^1.0.3
   currency_picker: ^2.0.16
-  flutter_iconpicker:
+  flutter_iconpicker: ^3.4.6
+  flutter_iconpicker_plus: ^3.2.3
   fl_chart: ^0.68.0
 
 dev_dependencies:

@@ -16,7 +16,7 @@ class BudgetCategory {
     this.spentAmount = 0,
     this.color = Colors.blue,
     this.icon = Icons.category,
-    this.currencyCode = 'USD',
+    this.currencyCode = 'PKR',
   });
 
   factory BudgetCategory.fromMap(Map<String, dynamic> map, String id) {
@@ -26,8 +26,9 @@ class BudgetCategory {
       budgetedAmount: map['budgetedAmount'],
       spentAmount: map['spentAmount'] ?? 0,
       color: Color(map['color'] ?? Colors.blue.value),
-      icon: IconData(map['icon'] ?? Icons.category.codePoint, fontFamily: 'MaterialIcons'),
-      currencyCode: map['currencyCode'] ?? 'USD',
+      icon: IconData(map['icon'] ?? Icons.category.codePoint,
+          fontFamily: 'MaterialIcons'),
+      currencyCode: map['currencyCode'] ?? 'PKR',
     );
   }
 

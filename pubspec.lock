@@ -278,6 +278,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.6"
+  flutter_iconpicker_plus:
+    dependency: "direct main"
+    description:
+      name: flutter_iconpicker_plus
+      sha256: "29f22d4efbb2e29e7a15b3e159857791b6b75600d80c43bcc780c81c8c776c98"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.3"
   flutter_lints:
     dependency: "direct dev"
     description:
