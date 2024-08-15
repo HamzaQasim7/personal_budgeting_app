@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import '../../model/budget_category.dart';
 import '../../provider/budget_provider.dart';
 import '../../widgets/custom_text_form_field.dart';
-import '../qalb_saleem/widgets/custom_nav_button.dart';
 
 class AddEditCategoryScreen extends StatefulWidget {
   final BudgetCategory? category;
@@ -79,11 +78,11 @@ class _AddEditCategoryScreenState extends State<AddEditCategoryScreen> {
   Widget _buildAppBar() {
     return Row(
       children: [
-        CustomNavButton(
-          onPress: () => Navigator.pop(context),
-          buttonColor: Colors.black87,
-          icon: Icons.arrow_back_ios_new_rounded,
-        ),
+        // CustomNavButton(
+        //   onPress: () => Navigator.pop(context),
+        //   buttonColor: Colors.black87,
+        //   icon: Icons.arrow_back_ios_new_rounded,
+        // ),
         const SizedBox(width: 10),
         Text(
           widget.category == null ? 'Add Category' : 'Edit Category',
