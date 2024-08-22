@@ -20,10 +20,16 @@ dependencies:
   currency_picker: ^2.0.16
   flutter_iconpicker: ^3.4.6
   flutter_iconpicker_plus: ^3.2.3
+#  flutter_circle_color_picker: ^0.3.0
   fl_chart: ^0.68.0
+  sleek_circular_slider: ^2.0.1
   http: ^1.2.2
+  carousel_slider: ^5.0.0
 
-
+  flutter_circle_color_picker:
+    git:
+      url: https://github.com/HamzaQasim7/flutter_circle_color_picker.git
+      ref: master
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -33,7 +39,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

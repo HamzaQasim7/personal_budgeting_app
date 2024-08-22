@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intern_test/provider/budget_provider.dart';
 import 'package:intern_test/screens/edit_screen/add_edit_budget_screen.dart';
+import 'package:intern_test/screens/new_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/budget_category.dart';
-import '../../widgets/budget_pie_chart.dart';
 import '../../widgets/category_list_items.dart';
+import 'data_over_view_screen.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -29,10 +30,24 @@ class _DashboardState extends State<Dashboard> {
     await Provider.of<BudgetProvider>(context, listen: false).fetchCategories();
   }
 
+  List<AccountCardData> accountCards = List.generate(
+    3,
+    (index) => AccountCardData(
+      cardName: 'HBL',
+      holderName: 'Hamza',
+      cardNumber: '022799723780',
+      backgroundImagePath: 'assets/images/networking.png',
+      cardColor: Colors.transparent,
+      cardType: 'Credit card',
+      expiryDate: '07/2023',
+    ),
+  );
+
   BudgetCategory category = BudgetCategory(id: '', name: '', budgetedAmount: 0);
   final totalBudget = budgetProvider.totalBudget.toStringAsFixed(1);
   final totalSpent = budgetProvider.totalSpent.toStringAsFixed(1);
   final currencyCode = budgetProvider.defaultCurrencyCode;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,102 +68,107 @@ class _DashboardState extends State<Dashboard> {
                     return const Center(
                         child: Text('No categories found. Add one!'));
                   }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 12.0, top: 12),
-                        child: _buildHeader(),
-                      ),
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 50),
+                        const Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Total Budget',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium!
-                                      .apply(fontSizeFactor: 0.7),
-                                ),
-                                Text(
-                                  '${category.currencyCode} ${budgetProvider.totalBudget.toStringAsFixed(1)}',
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                ),
-                                Text(
-                                  'Total Spent',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium!
-                                      .apply(fontSizeFactor: 0.7),
-                                ),
-                                Text(
-                                  "${category.currencyCode} ${budgetProvider.totalSpent.toStringAsFixed(1)}",
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                ),
-                              ],
+                            Text('Hi!, Good Evening'),
+                            Text(
+                              'Hamza',
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(
-                              width: 150,
-                              child: BudgetPieChart(
-                                  categories: budgetProvider.categories),
-                            ),
-                            const SizedBox(),
                           ],
                         ),
-                      ),
-                      const SizedBox(height: 30),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 12.0),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'All categories',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge!
-                                .apply(fontWeightDelta: 2),
+                        const SizedBox(height: 20),
+                        AccountCardsCarousel(cards: accountCards),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            SmallCardWidget(
+                              title: 'Income',
+                              amount:
+                                  '${category.currencyCode} ${budgetProvider.totalBudget.toStringAsFixed(1)}',
+                              cardColor: Colors.green.shade200,
+                            ),
+                            const SizedBox(width: 8),
+                            SmallCardWidget(
+                              title: 'Expense',
+                              cardColor: Colors.red.shade200,
+                              amount:
+                                  "${category.currencyCode} ${budgetProvider.totalSpent.toStringAsFixed(1)}",
+                            ),
+                          ],
+                        ),
+                        // const SizedBox(height: 20),
+                        // Padding(
+                        //   padding: const EdgeInsets.all(16.0),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       SizedBox(
+                        //         width: 150,
+                        //         child: BudgetPieChart(
+                        //             categories: budgetProvider.categories),
+                        //       ),
+                        //       const SizedBox(),
+                        //     ],
+                        //   ),
+                        // ),
+                        const SizedBox(height: 30),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'All categories',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .apply(fontWeightDelta: 2),
+                              ),
+                              TextButton(
+                                  onPressed: () {}, child: const Text('Show'))
+                            ],
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: budgetProvider.categories.length,
-                          reverse: true,
-                          itemBuilder: (context, index) {
-                            final category = budgetProvider.categories[index];
-                            return Dismissible(
-                              key: Key(category.id),
-                              background: Container(
-                                color: Colors.red,
-                                alignment: Alignment.centerRight,
-                                padding: const EdgeInsets.only(right: 20),
-                                child: const Icon(Icons.delete,
-                                    color: Colors.white),
-                              ),
-                              direction: DismissDirection.endToStart,
-                              onDismissed: (direction) {
-                                budgetProvider.deleteCategory(category.id);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content:
-                                          Text('${category.name} deleted')),
-                                );
-                              },
-                              child: CategoryListItem(category: category),
-                            );
-                          },
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: budgetProvider.categories.length,
+                            reverse: true,
+                            itemBuilder: (context, index) {
+                              final category = budgetProvider.categories[index];
+                              return Dismissible(
+                                key: Key(category.id),
+                                background: Container(
+                                  color: Colors.red,
+                                  alignment: Alignment.centerRight,
+                                  padding: const EdgeInsets.only(right: 20),
+                                  child: const Icon(Icons.delete,
+                                      color: Colors.white),
+                                ),
+                                direction: DismissDirection.endToStart,
+                                onDismissed: (direction) {
+                                  budgetProvider.deleteCategory(category.id);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content:
+                                            Text('${category.name} deleted')),
+                                  );
+                                },
+                                child: CategoryListItem(category: category),
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   );
                 },
               );
@@ -183,8 +203,7 @@ class _DashboardState extends State<Dashboard> {
       onPressed: () async {
         await Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => const AddEditCategoryScreen()),
+          MaterialPageRoute(builder: (context) => const OverviewScreen()),
         );
         _refreshCategories();
       },
@@ -194,5 +213,46 @@ class _DashboardState extends State<Dashboard> {
         size: 30,
       ),
     );
+  }
+}
+
+class SmallCardWidget extends StatelessWidget {
+  const SmallCardWidget({
+    super.key,
+    required this.amount,
+    required this.cardColor,
+    required this.title,
+  });
+
+  final String amount, title;
+  final Color cardColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        child: Container(
+      width: MediaQuery.sizeOf(context).width * 0.4,
+      height: MediaQuery.sizeOf(context).height * 0.08,
+      decoration: BoxDecoration(
+          color: cardColor, borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10.0, left: 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text(
+              amount,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w500, color: Colors.black54),
+            ),
+          ],
+        ),
+      ),
+    ));
   }
 }

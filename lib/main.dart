@@ -1,9 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:intern_test/coloring.dart';
 import 'package:intern_test/provider/budget_provider.dart';
 import 'package:intern_test/provider/data_provider.dart';
 import 'package:intern_test/provider/post_provider.dart';
 import 'package:intern_test/provider/qlbe_saleem_audio_provider.dart';
+import 'package:intern_test/screens/dashboard/dashboard_screen.dart';
+import 'package:intern_test/screens/dum/dashboard_screen.dart';
 import 'package:intern_test/screens/loaded_data_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -66,7 +69,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: const KeepAlivePage(),
+        home: const ColorPickerScreen(),
       ),
     );
   }
